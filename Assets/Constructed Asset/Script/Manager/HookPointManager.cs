@@ -5,7 +5,7 @@ using UnityEngine;
 public class HookPointManager : MonoSingleton<HookPointManager>
 {
     // Hook point on the current level, only available on read
-    private List<HookPoint> _hookPoints;
+    private List<HookPoint> _hookPoints = new();
     public void AddHookPoint(HookPoint point) => _hookPoints.Add(point);
 
 

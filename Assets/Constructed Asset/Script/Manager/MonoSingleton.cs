@@ -16,7 +16,7 @@ namespace BaseTemplate.Behaviours
                 {
                     if (s_Instance == null)
                     {
-                        UnityEngine.Object[] instances = FindObjectsOfType(typeof(T));
+                        UnityEngine.Object[] instances = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
 
                         if (instances.Length > 1)
                         {
