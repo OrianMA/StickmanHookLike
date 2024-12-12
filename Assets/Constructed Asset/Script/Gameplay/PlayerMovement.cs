@@ -111,8 +111,8 @@ public class PlayerMovement : MonoBehaviour
                 // Move the player to the direction
                 transform.position += (_hookPointGrab.transform.position - transform.position).normalized * _moveForwardOnHookSpeed * curveValue * Time.deltaTime;
 
-                _dynamicMoveForwardDuration += Time.deltaTime;
             }
+                _dynamicMoveForwardDuration += Time.deltaTime;
 
 
             // Apply adding force when the player fall with the hook on 
