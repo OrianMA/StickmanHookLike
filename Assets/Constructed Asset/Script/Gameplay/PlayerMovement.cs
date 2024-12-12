@@ -10,8 +10,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private DistanceJoint2D _hookDistanceJoint;
     [SerializeField] private Rigidbody2D _playerRigidbody;
     [SerializeField] private CinemachineCamera _playerCam;
+    [SerializeField] private GameObject _playerBackground;
 
     [Header("Proprety")]
+    [SerializeField] float hookVisualYOffset;
+    [Space(5)]
     [SerializeField] private float _moveForwardOnHookSpeed;
     [SerializeField] private float _moveForwardOnHookDuration;
     [SerializeField] AnimationCurve _moveForwardCurvefunction;
@@ -119,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Set lineRenderer start and end position
-            _hookLine.SetPosition(0, transform.position);
+            _hookLine.SetPosition(0, transform.position + Vector3.up * hookVisualYOffset);
             _hookLine.SetPosition(1, _hookPointGrab.transform.position);
         }
 
@@ -127,6 +130,18 @@ public class PlayerMovement : MonoBehaviour
         _playerCam.Lens.OrthographicSize = Mathf.Lerp(_playerCam.Lens.OrthographicSize,
                                                       Mathf.Clamp(_cameraOrthographicSizeMinMax.x-1 + _playerRigidbody.linearVelocity.magnitude / _divideMagnitude, _cameraOrthographicSizeMinMax.x, _cameraOrthographicSizeMinMax.y),
                                                       _cameraOrthographicSizeSpeed * Time.deltaTime);
+
+
+        // Get the orthographic size and aspect ratio
+        float aspectRatio = (float)Screen.width / Screen.height;
+
+        // Calculate the size of the square
+        float height = _playerCam.Lens.OrthographicSize * 2f; // Total height of camera view
+        float width = height * aspectRatio;  // Total width of camera view
+        float size = Mathf.Min(width, height); // Ensure it fits within both dimensions
+
+        // Adjust the scale of the square
+        _playerBackground.transform.localScale = new Vector3(width*1.25f, height*1.25f, 1f);
 
     }
 }
