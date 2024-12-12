@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,15 +8,24 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private LineRenderer _hookLine;
     [SerializeField] private DistanceJoint2D _hookDistanceJoint;
-    [SerializeField] private Rigidbody2D _hookRigidbody;
+    [SerializeField] private Rigidbody2D _playerRigidbody;
+    [SerializeField] private CinemachineCamera _playerCam;
 
     [Header("Proprety")]
     [SerializeField] private float _moveForwardOnHookSpeed;
     [SerializeField] private float _moveForwardOnHookDuration;
     [SerializeField] AnimationCurve _moveForwardCurvefunction;
+    [SerializeField] private float _magnitudeMaxToMoveForward;
     [Space(5)]
     // On Player Dehook when he not finish the moveForwardAnimation
     [SerializeField] float _forceApplyOnDehook;
+
+    [SerializeField] float _gravityForce;
+
+    [Header("Camera propreties")]
+    [SerializeField] Vector2 _cameraOrthographicSizeMinMax;
+    [SerializeField] float _cameraOrthographicSizeSpeed;
+    [SerializeField] float _divideMagnitude;
 
     private InputSystem_Actions _inpPlayer;
     private HookPoint _hookPointGrab;
@@ -24,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     private float _dynamicMoveForwardDuration;
     private float _startHookTime;
     private float _hookLenght;
+
+    private float _dynamicCameraOrthographicSize; 
 
     private void Start()
     {
@@ -65,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         // If the player dont finish the animation move forward, apply a force to continue his trajectory
         if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration)
         {
-            _hookRigidbody.AddForce((_hookPointGrab.transform.position - transform.position).normalized * _forceApplyOnDehook);
+            _playerRigidbody.AddForce((_hookPointGrab.transform.position - transform.position).normalized * _forceApplyOnDehook);
         }
 
         // Deassign the hookPoint
@@ -79,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         if (_hookLine.enabled) {
 
             // Control only the dynamic animation move forward at the beggining of hooking
-            if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration) {
+            if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration && _playerRigidbody.linearVelocity.magnitude <= _magnitudeMaxToMoveForward) {
 
                 float distanceCovered = (Time.time - _startHookTime) * _moveForwardOnHookSpeed;
                 float fractionOfJourney = distanceCovered / _hookLenght;
@@ -99,14 +111,22 @@ public class PlayerMovement : MonoBehaviour
                 _dynamicMoveForwardDuration += Time.deltaTime;
             }
 
-            //Vector2 force = _hookDirection * _initialForce * forceMultiplier;
 
-            // Apply the force to the Rigidbody2D (in the direction of the hook)
-            //_rb.AddForce(force, ForceMode2D.Force);
+            // Apply adding force when the player fall with the hook on 
+            if (_playerRigidbody.linearVelocity.y < 0f) {
+            
+                _playerRigidbody.linearVelocity += Vector2.down * _gravityForce * Time.deltaTime;
+            }
 
             // Set lineRenderer start and end position
             _hookLine.SetPosition(0, transform.position);
             _hookLine.SetPosition(1, _hookPointGrab.transform.position);
         }
+
+
+        _playerCam.Lens.OrthographicSize = Mathf.Lerp(_playerCam.Lens.OrthographicSize,
+                                                      Mathf.Clamp(_cameraOrthographicSizeMinMax.x-1 + _playerRigidbody.linearVelocity.magnitude / _divideMagnitude, _cameraOrthographicSizeMinMax.x, _cameraOrthographicSizeMinMax.y),
+                                                      _cameraOrthographicSizeSpeed * Time.deltaTime);
+
     }
 }
