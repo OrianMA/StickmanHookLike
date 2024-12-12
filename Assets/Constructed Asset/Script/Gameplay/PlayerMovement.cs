@@ -13,7 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject _playerBackground;
 
     [Header("Proprety")]
-    [SerializeField] float hookVisualYOffset;
+    [SerializeField] float _hookVisualYOffset;
+    [SerializeField] float _maxXVelocityToImpulse;
+    [SerializeField] float _xImpulsionOnStart;
     [Space(5)]
     [SerializeField] private float _moveForwardOnHookSpeed;
     [SerializeField] private float _moveForwardOnHookDuration;
@@ -69,6 +71,11 @@ public class PlayerMovement : MonoBehaviour
         _hookLine.enabled = true;
         _hookDistanceJoint.enabled = true;
         _hookDistanceJoint.connectedBody = _hookPointGrab.rb;
+
+        if (_playerRigidbody.linearVelocity.x <= _maxXVelocityToImpulse)
+        {
+            _playerRigidbody.AddForceX(_xImpulsionOnStart);
+        }
     }
     private void ProcessTouchCancel(InputAction.CallbackContext context)
     {
@@ -122,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Set lineRenderer start and end position
-            _hookLine.SetPosition(0, transform.position + Vector3.up * hookVisualYOffset);
+            _hookLine.SetPosition(0, transform.position + Vector3.up * _hookVisualYOffset);
             _hookLine.SetPosition(1, _hookPointGrab.transform.position);
         }
 
