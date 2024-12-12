@@ -99,10 +99,10 @@ public class PlayerMovement : MonoBehaviour
                 _dynamicMoveForwardDuration += Time.deltaTime;
             }
 
-            Vector2 force = _hookDirection * _initialForce * forceMultiplier;
+            //Vector2 force = _hookDirection * _initialForce * forceMultiplier;
 
             // Apply the force to the Rigidbody2D (in the direction of the hook)
-            _rb.AddForce(force, ForceMode2D.Force);
+            //_rb.AddForce(force, ForceMode2D.Force);
 
             // Set lineRenderer start and end position
             _hookLine.SetPosition(0, transform.position);

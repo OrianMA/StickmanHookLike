@@ -58288,7 +58288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7719106908522133308, guid: 70d81eda8e0f6ed4cacd2cd39389ede7, type: 3}
       propertyPath: _moveForwardOnHookDuration
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7719106908522133308, guid: 70d81eda8e0f6ed4cacd2cd39389ede7, type: 3}
       propertyPath: moveForwardOnHookIntensity
