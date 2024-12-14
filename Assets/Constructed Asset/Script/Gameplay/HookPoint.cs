@@ -1,3 +1,4 @@
+using UnityEditor.VisionOS;
 using UnityEngine;
 
 public class HookPoint : MonoBehaviour
@@ -6,6 +7,7 @@ public class HookPoint : MonoBehaviour
 
     [SerializeField] private SpriteRenderer _NoHookedRenderer;
     [SerializeField] private SpriteRenderer _HookedRenderer;
+    [SerializeField] private ParticleSystem _HookPointSelectedParticles;
 
     void Start()
     {
@@ -28,5 +30,10 @@ public class HookPoint : MonoBehaviour
     {
         _HookedRenderer.gameObject.SetActive(isHooked);
         _NoHookedRenderer.gameObject.SetActive(!isHooked);
+    }
+
+    public void SetSelectHookPoint(bool value)
+    {
+        _HookPointSelectedParticles.gameObject.SetActive(value);
     }
 }

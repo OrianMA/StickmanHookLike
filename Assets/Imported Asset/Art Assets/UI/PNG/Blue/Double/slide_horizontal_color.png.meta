@@ -129,12 +129,12 @@ TextureImporter:
       name: slide_horizontal_color_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 30
         y: 0
-        width: 192
+        width: 133
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7ac8ef7a81e3f0e458d53a6f20d78a53
     internalID: 0
     vertices: []
     indices: 
@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      slide_horizontal_color_0: -9083129648240841659
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

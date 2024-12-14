@@ -1,19 +1,21 @@
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using DG.Tweening;
+using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LineRenderer _hookLine;
     [SerializeField] private DistanceJoint2D _hookDistanceJoint;
-    [SerializeField] private Rigidbody2D _playerRigidbody;
     [SerializeField] private CinemachineCamera _playerCam;
-    [SerializeField] private GameObject _playerBackground;
+    [SerializeField] private PlayerUIManager _playerUIManager;
+    public BeginCinematicTrigger BeginCinematic;
+    public Rigidbody2D PlayerRigidbody;
+    public PlayerTimer Timer;
 
     [Header("Proprety")]
-    [SerializeField] float _hookVisualYOffset;
+    [SerializeField] Vector3 _hookVisualOffset;
     [SerializeField] float _maxXVelocityToImpulse;
     [SerializeField] float _xImpulsionOnStart;
     [Space(5)]
@@ -34,19 +36,19 @@ public class PlayerMovement : MonoBehaviour
 
     private InputSystem_Actions _inpPlayer;
     private HookPoint _hookPointGrab;
+    private HookPoint _nearestHookPoint;
 
     // Use to controle the animation curve to the move forward animation
     private float _dynamicMoveForwardDuration;
     private float _startHookTime;
     private float _hookLenght;
 
-    private float _dynamicCameraOrthographicSize; 
+    private bool _isFirstHooking;
+    private bool _canPlayerMove;
 
     private void Start()
     {
-        // Disable hook proprety
-        _hookLine.enabled = false;
-        _hookDistanceJoint.enabled = false;
+        PlayerManager.Instance.AddPlayer(this);
 
         // Enable player inputs (Pc - mobile)
         _inpPlayer = new InputSystem_Actions();
@@ -56,8 +58,34 @@ public class PlayerMovement : MonoBehaviour
         _inpPlayer.Enable();
     }
 
+    public void StartGame()
+    {
+        // Disable hook proprety
+        _hookLine.enabled = false;
+        _hookDistanceJoint.enabled = false;
+        _isFirstHooking = true;
+
+        // Can player move ? Now yes
+        _canPlayerMove = true;
+
+        // Text tap to skip cinematic disable
+        _playerUIManager.SkipToStartText.SetActive(false);
+    }
+
+    // Reset his speed
+    public void ResetVelocity() => PlayerRigidbody.linearVelocity = Vector3.zero;
+
     private void ProcessTouchStart(InputAction.CallbackContext context)
     {
+        if (!_canPlayerMove)
+        {
+            if (BeginCinematic)
+            {
+                BeginCinematic.SkipCinematic();
+            }
+            return;
+        }
+
         // Get the nereast hook point and assign it
         _hookPointGrab = HookPointManager.Instance.GetNearestHookPoint(transform.position);
         _hookPointGrab.OnHooked();
@@ -72,13 +100,20 @@ public class PlayerMovement : MonoBehaviour
         _hookDistanceJoint.enabled = true;
         _hookDistanceJoint.connectedBody = _hookPointGrab.rb;
 
-        if (_playerRigidbody.linearVelocity.x <= _maxXVelocityToImpulse)
+        if (PlayerRigidbody.linearVelocity.x <= _maxXVelocityToImpulse)
         {
-            _playerRigidbody.AddForceX(_xImpulsionOnStart);
+            PlayerRigidbody.AddForceX(_xImpulsionOnStart);
+        }
+
+        if (_isFirstHooking)
+        {
+            Timer.SetActiveTimer(true);
         }
     }
     private void ProcessTouchCancel(InputAction.CallbackContext context)
     {
+        if (!_hookPointGrab)
+            return;
 
         // Disable hook and his visual
         _hookLine.enabled = false;
@@ -87,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
         // If the player dont finish the animation move forward, apply a force to continue his trajectory
         if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration)
         {
-            _playerRigidbody.AddForce((_hookPointGrab.transform.position - transform.position).normalized * _forceApplyOnDehook);
+            PlayerRigidbody.AddForce((_hookPointGrab.transform.position - transform.position).normalized * _forceApplyOnDehook);
         }
 
         // Deassign the hookPoint
@@ -97,11 +132,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!_canPlayerMove)
+            return;
+
         // On hook, set always set the line position
         if (_hookLine.enabled) {
 
             // Control only the dynamic animation move forward at the beggining of hooking
-            if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration && _playerRigidbody.linearVelocity.magnitude <= _magnitudeMaxToMoveForward) {
+            if (_dynamicMoveForwardDuration < _moveForwardOnHookDuration && PlayerRigidbody.linearVelocity.magnitude <= _magnitudeMaxToMoveForward) {
 
                 float distanceCovered = (Time.time - _startHookTime) * _moveForwardOnHookSpeed;
                 float fractionOfJourney = distanceCovered / _hookLenght;
@@ -123,32 +161,53 @@ public class PlayerMovement : MonoBehaviour
 
 
             // Apply adding force when the player fall with the hook on 
-            if (_playerRigidbody.linearVelocity.y < 0f) {
-            
-                _playerRigidbody.linearVelocity += Vector2.down * _gravityForce * Time.deltaTime;
+            if (PlayerRigidbody.linearVelocity.y < 0f) {
+
+                PlayerRigidbody.linearVelocity += Vector2.down * _gravityForce * Time.deltaTime;
             }
 
             // Set lineRenderer start and end position
-            _hookLine.SetPosition(0, transform.position + Vector3.up * _hookVisualYOffset);
+            _hookLine.SetPosition(0, transform.position + _hookVisualOffset);
             _hookLine.SetPosition(1, _hookPointGrab.transform.position);
+        } 
+        else
+        {
+            // Show what is the nearestHookPoint in game
+            HookPoint newHookPoint = HookPointManager.Instance.GetNearestHookPoint(transform.position);
+            if (!_nearestHookPoint || _nearestHookPoint != newHookPoint)
+            {
+                if (_nearestHookPoint != null) {
+                    _nearestHookPoint.SetSelectHookPoint(false);
+                }
+                _nearestHookPoint = newHookPoint;
+                _nearestHookPoint.SetSelectHookPoint(true);
+            }
+            
         }
 
-
+        // Zoom and dezoom on the player with his speed
         _playerCam.Lens.OrthographicSize = Mathf.Lerp(_playerCam.Lens.OrthographicSize,
-                                                      Mathf.Clamp(_cameraOrthographicSizeMinMax.x-1 + _playerRigidbody.linearVelocity.magnitude / _divideMagnitude, _cameraOrthographicSizeMinMax.x, _cameraOrthographicSizeMinMax.y),
+                                                      Mathf.Clamp(_cameraOrthographicSizeMinMax.x-1 + PlayerRigidbody.linearVelocity.magnitude / _divideMagnitude, _cameraOrthographicSizeMinMax.x, _cameraOrthographicSizeMinMax.y),
                                                       _cameraOrthographicSizeSpeed * Time.deltaTime);
+    }
 
+    public void OnEndAnimation()
+    {
+        // DOTWEEN ANIMATION END
 
-        // Get the orthographic size and aspect ratio
-        float aspectRatio = (float)Screen.width / Screen.height;
+        // Disable movement and gravity
+        PlayerRigidbody.gravityScale = 0;
+        _canPlayerMove = false;
+        _inpPlayer.Disable();
+        // Zoom on the player with dotween animation
+        _playerCam.Lens.OrthographicSize = 4;
+        Vector2 targetVelocity = PlayerRigidbody.linearVelocity.normalized;
 
-        // Calculate the size of the square
-        float height = _playerCam.Lens.OrthographicSize * 2f; // Total height of camera view
-        float width = height * aspectRatio;  // Total width of camera view
-        float size = Mathf.Min(width, height); // Ensure it fits within both dimensions
-
-        // Adjust the scale of the square
-        _playerBackground.transform.localScale = new Vector3(width*1.25f, height*1.25f, 1f);
-
+        DOTween.Sequence(DOVirtual.Float(_playerCam.Lens.OrthographicSize, 4, .5f, (float t) =>
+        {
+            _playerCam.Lens.OrthographicSize = t;
+            PlayerRigidbody.linearVelocity = Vector2.Lerp(PlayerRigidbody.linearVelocity, targetVelocity, 5 * Time.deltaTime);
+            
+        }).SetEase(Ease.Linear)).OnComplete(() => _playerUIManager.ShowOnFinishCanvas());
     }
 }
