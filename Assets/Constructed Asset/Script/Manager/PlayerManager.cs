@@ -6,11 +6,13 @@ using UnityEngine;
 public class PlayerManager : MonoSingleton<PlayerManager>
 {
     private List<PlayerMovement> _allPlayer = new();
+    private List<Transform> _allPlayerPos = new();
 
     // For manager all player (if there are more than one player)
     public void AddPlayer(PlayerMovement player)
     {
         _allPlayer.Add(player);
+        _allPlayerPos.Add(player.transform);
     }
 
     public void SetBeginAnimation(BeginCinematicTrigger trigger)
@@ -29,4 +31,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             player.StartGame();
         }
     }
+
+    public List<Transform> GetPlayerPos() => _allPlayerPos;
 }

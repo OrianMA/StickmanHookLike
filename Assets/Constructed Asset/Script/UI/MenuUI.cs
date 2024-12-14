@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -10,8 +11,15 @@ public class MenuUI : MonoBehaviour
         _levelText.text = PlayerPrefs.GetInt("LevelIndex").ToString();
     }
 
-    public void StartGame()
+    public void StartGame(int levelIndex)
     {
+        PlayerPrefs.SetInt("LevelIndex", levelIndex);
+        SceneManager.LoadScene("MainScene");
+    }
 
+    public void ContinueGame()
+    {
+        PlayerPrefs.SetInt("LevelIndex", PlayerPrefs.GetInt("MaxLevelIndex"));
+        SceneManager.LoadScene("MainScene");
     }
 }

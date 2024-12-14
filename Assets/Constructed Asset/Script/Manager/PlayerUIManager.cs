@@ -31,4 +31,16 @@ public class PlayerUIManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void ContinueToNextLevel()
+    {
+        // Increment level index
+        PlayerPrefs.SetInt("LevelIndex", PlayerPrefs.GetInt("LevelIndex") + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
 }

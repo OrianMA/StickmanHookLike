@@ -13,8 +13,12 @@ public class EndZone : MonoBehaviour
             // End Animation
             playerMovement.OnEndAnimation();
 
-            // Increment level index save
-            PlayerPrefs.SetInt("LevelIndex", PlayerPrefs.GetInt("LevelIndex") + 1);
+
+            // If Player make the most advanced level for him, increment his max level available
+            if (PlayerPrefs.GetInt("MaxLevelIndex") == PlayerPrefs.GetInt("LevelIndex"))
+            {
+                PlayerPrefs.SetInt("MaxLevelIndex", PlayerPrefs.GetInt("MaxLevelIndex") + 1);
+            }
         }
     }
 }

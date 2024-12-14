@@ -148,18 +148,18 @@ PrefabInstance:
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 671362822}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RestartLevel
+      value: ContinueGame
       objectReference: {fileID: 0}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerUIManager, Assembly-CSharp
+      value: MenuUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -631,16 +631,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 633183463}
-  m_LocalRotation: {x: 0, y: 0, z: 0.058783635, w: 0.99827075}
+  m_LocalRotation: {x: 0, y: 0, z: 0.07088814, w: 0.9974843}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 441174079}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 6.74}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 8.13}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 22, y: -221}
+  m_AnchoredPosition: {x: 29.14, y: -221}
   m_SizeDelta: {x: 16.5, y: 459.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &633183465
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 646808969}
   - component: {fileID: 646808968}
   m_Layer: 3
-  m_Name: TimerText
+  m_Name: LevelMaxText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -832,6 +832,7 @@ GameObject:
   - component: {fileID: 671362821}
   - component: {fileID: 671362817}
   - component: {fileID: 671362816}
+  - component: {fileID: 671362822}
   m_Layer: 3
   m_Name: OnFinishCanvas
   m_TagString: Untagged
@@ -970,9 +971,22 @@ CanvasGroup:
   m_GameObject: {fileID: 671362814}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 0
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &671362822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671362814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12065f329c0c18742a08c667af795c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelText: {fileID: 646808968}
 --- !u!1 &1168899996
 GameObject:
   m_ObjectHideFlags: 0
