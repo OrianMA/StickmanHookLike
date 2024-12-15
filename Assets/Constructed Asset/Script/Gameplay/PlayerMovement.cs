@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] AnimationCurve _moveForwardCurvefunction;
     [SerializeField] private float _magnitudeMaxToMoveForward;
     [Space(5)]
+    [SerializeField] float veclocityMagnitudeMax;
+    [Space(5)]
     // On Player Dehook when he not finish the moveForwardAnimation
     [SerializeField] float _forceApplyOnDehook;
 
@@ -134,6 +136,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
+        PlayerRigidbody.linearVelocity = new Vector2(
+                                                        Mathf.Clamp(PlayerRigidbody.linearVelocity.x, -veclocityMagnitudeMax, veclocityMagnitudeMax),
+                                                        Mathf.Clamp(PlayerRigidbody.linearVelocity.y, -veclocityMagnitudeMax, veclocityMagnitudeMax)
+                                                    );
+
+
         if (!_canPlayerMove)
             return;
 

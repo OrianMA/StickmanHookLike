@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6585501430845502500}
   - component: {fileID: 4977712851898235345}
   m_Layer: 3
-  m_Name: LevelSelectorButton
+  m_Name: SquareButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

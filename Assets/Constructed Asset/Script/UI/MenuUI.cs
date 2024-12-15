@@ -25,7 +25,8 @@ public class MenuUI : MonoBehaviour
             else
                 _bestScoreTexts[i].text = PlayerPrefs.GetString($"Level{i}");
         }
-        _levelText.text = PlayerPrefs.GetInt("LevelIndex").ToString();
+
+        _levelText.text = PlayerPrefs.GetInt("MaxLevelIndex").ToString();
     }
 
     public void StartGame(int levelIndex)
