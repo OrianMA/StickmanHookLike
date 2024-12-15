@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 359603391635471291}
   - component: {fileID: 937423777042895182}
-  - component: {fileID: 7308348520302198025}
+  - component: {fileID: 6916009905476403601}
   m_Layer: 0
   m_Name: platformBumper
   m_TagString: Untagged
@@ -88,8 +88,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &7308348520302198025
-CapsuleCollider2D:
+--- !u!61 &6916009905476403601
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,5 +123,14 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 1.28}
+    newSize: {x: 0.32, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   m_Size: {x: 0.32, y: 1.28}
-  m_Direction: 0
+  m_EdgeRadius: 0
