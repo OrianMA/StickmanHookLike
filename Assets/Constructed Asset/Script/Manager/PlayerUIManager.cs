@@ -7,7 +7,7 @@ public class PlayerUIManager : MonoBehaviour
     [Header("In Game Canvas")]
     [SerializeField] CanvasGroup _inGameCanvas;
     public GameObject SkipToStartText;
-    [SerializeField] PlayerTimerUI _playerTimerUI;
+    public PlayerTimerUI PlayerTimerUI;
 
     [Header("On Finish Game Canvas")]
     [SerializeField] CanvasGroup _onFinishCanvas;
@@ -23,7 +23,7 @@ public class PlayerUIManager : MonoBehaviour
         _onFinishCanvas.interactable = true;
         _onFinishCanvas.alpha = 1;
 
-        _finalTimerText.text = _playerTimerUI.PlayerTimerText.text;
+        _finalTimerText.text = PlayerTimerUI.PlayerTimerText.text;
     }
 
     // Reload the scene to restart the level

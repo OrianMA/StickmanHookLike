@@ -56,7 +56,7 @@ MonoBehaviour:
   _hookLine: {fileID: 5081638928556583107}
   _hookDistanceJoint: {fileID: 1052398027722505501}
   _playerCam: {fileID: 6059458960095396895}
-  _playerUIManager: {fileID: 1888208105196930096}
+  PlayerUIManager: {fileID: 1888208105196930096}
   BeginCinematic: {fileID: 0}
   PlayerRigidbody: {fileID: 6602513610277749730}
   Timer: {fileID: 8213543520799790366}
@@ -137,9 +137,9 @@ MonoBehaviour:
   _magnitudeMaxToMoveForward: 3
   _forceApplyOnDehook: 175
   _gravityForce: 15
-  _cameraOrthographicSizeMinMax: {x: 7, y: 15}
+  _cameraOrthographicSizeMinMax: {x: 8, y: 18}
   _cameraOrthographicSizeSpeed: 3
-  _divideMagnitude: 4
+  _divideMagnitude: 3
 --- !u!120 &5081638928556583107
 LineRenderer:
   serializedVersion: 2
@@ -1007,7 +1007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inGameCanvas: {fileID: 8492352081361762317}
   SkipToStartText: {fileID: 5693341685012633153}
-  _playerTimerUI: {fileID: 3037422140215290096}
+  PlayerTimerUI: {fileID: 3037422140215290096}
   _onFinishCanvas: {fileID: 3106972759189403673}
   _finalTimerText: {fileID: 8796798657930522738}
 --- !u!1 &3279085552454614057
@@ -1370,8 +1370,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6021421928981216846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1593,7 +1593,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' 00:00:00'
+  m_text: ' 00:00:000'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8e4f4d6bc01ae0a4b87e5b5b553176ea, type: 2}
   m_sharedMaterial: {fileID: -511779558090172750, guid: 8e4f4d6bc01ae0a4b87e5b5b553176ea, type: 2}
@@ -1955,7 +1955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RestartLevel
+      value: ContinueToNextLevel
       objectReference: {fileID: 0}
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2090,6 +2090,34 @@ PrefabInstance:
     - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_SpriteState.m_PressedSprite
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1888208105196930096}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113944362361155870, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5906799743230367680, guid: b89e8ebeec45df64bba8c5228aacfa34, type: 3}
       propertyPath: m_Pivot.x

@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LineRenderer _hookLine;
     [SerializeField] private DistanceJoint2D _hookDistanceJoint;
     [SerializeField] private CinemachineCamera _playerCam;
-    [SerializeField] private PlayerUIManager _playerUIManager;
+    public PlayerUIManager PlayerUIManager;
     public BeginCinematicTrigger BeginCinematic;
     public Rigidbody2D PlayerRigidbody;
     public PlayerTimer Timer;
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         _canPlayerMove = true;
 
         // Text tap to skip cinematic disable
-        _playerUIManager.SkipToStartText.SetActive(false);
+        PlayerUIManager.SkipToStartText.SetActive(false);
     }
 
     // Reset his speed
@@ -208,6 +208,6 @@ public class PlayerMovement : MonoBehaviour
             _playerCam.Lens.OrthographicSize = t;
             PlayerRigidbody.linearVelocity = Vector2.Lerp(PlayerRigidbody.linearVelocity, targetVelocity, 5 * Time.deltaTime);
             
-        }).SetEase(Ease.Linear)).OnComplete(() => _playerUIManager.ShowOnFinishCanvas());
+        }).SetEase(Ease.Linear)).OnComplete(() => PlayerUIManager.ShowOnFinishCanvas());
     }
 }
