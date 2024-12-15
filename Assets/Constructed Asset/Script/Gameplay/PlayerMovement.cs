@@ -3,13 +3,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LineRenderer _hookLine;
     [SerializeField] private DistanceJoint2D _hookDistanceJoint;
     [SerializeField] private CinemachineCamera _playerCam;
-    public PlayerUIManager PlayerUIManager;
+    public PlayerUI PlayerUIManager;
     public BeginCinematicTrigger BeginCinematic;
     public Rigidbody2D PlayerRigidbody;
     public PlayerTimer Timer;
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Text tap to skip cinematic disable
         PlayerUIManager.SkipToStartText.SetActive(false);
+        PlayerUIManager.PauseButton.SetActive(true);
     }
 
     // Reset his speed
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessTouchStart(InputAction.CallbackContext context)
     {
-        if (!_canPlayerMove)
+        if (!_canPlayerMove  ||  EventSystem.current.IsPointerOverGameObject())
         {
             if (BeginCinematic)
             {
@@ -209,5 +211,13 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigidbody.linearVelocity = Vector2.Lerp(PlayerRigidbody.linearVelocity, targetVelocity, 5 * Time.deltaTime);
             
         }).SetEase(Ease.Linear)).OnComplete(() => PlayerUIManager.ShowOnFinishCanvas());
+    }
+
+    public void SetActiveInput(bool value)
+    {
+        if (value)
+            _inpPlayer.Player.Enable();
+        else
+            _inpPlayer.Player.Disable();
     }
 }

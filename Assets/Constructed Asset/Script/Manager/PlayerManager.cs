@@ -1,5 +1,4 @@
 using BaseTemplate.Behaviours;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -42,11 +41,11 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         if (PlayerPrefs.GetInt("MaxLevelIndex") == PlayerPrefs.GetInt("LevelIndex"))
         {
             PlayerPrefs.SetInt("MaxLevelIndex", PlayerPrefs.GetInt("MaxLevelIndex") + 1);
-            PlayerPrefs.SetString($"Level{PlayerPrefs.GetInt("LevelIndex")}", player.PlayerUIManager.PlayerTimerUI.PlayerTimerText.text);
+            PlayerPrefs.SetString($"Level{PlayerPrefs.GetInt("LevelIndex")}", player.Timer.PlayerTimerText.text);
         } else
         {
             // Clean the strings to remove TextMeshPro tags
-            string cleanTimer1 = CleanTimerString(player.PlayerUIManager.PlayerTimerUI.PlayerTimerText.text);
+            string cleanTimer1 = CleanTimerString(player.Timer.PlayerTimerText.text);
             string cleanTimer2 = CleanTimerString(PlayerPrefs.GetString($"Level{PlayerPrefs.GetInt("LevelIndex")}"));
 
             // Parse the cleaned strings
@@ -54,7 +53,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             TimeSpan bestTime = ParseCustomTimeFormat(cleanTimer2);
 
             if (currentTime < bestTime)
-                PlayerPrefs.SetString($"Level{PlayerPrefs.GetInt("LevelIndex")}", player.PlayerUIManager.PlayerTimerUI.PlayerTimerText.text);
+                PlayerPrefs.SetString($"Level{PlayerPrefs.GetInt("LevelIndex")}", player.Timer.PlayerTimerText.text);
         }
     }
 

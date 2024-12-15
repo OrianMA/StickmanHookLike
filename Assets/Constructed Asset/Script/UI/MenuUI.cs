@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -50,5 +51,14 @@ public class MenuUI : MonoBehaviour
         group.alpha = 1;
         group.interactable = true;
         group.blocksRaycasts = true;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+        #endif
     }
 }
